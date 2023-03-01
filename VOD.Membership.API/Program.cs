@@ -1,3 +1,9 @@
+using Microsoft.AspNetCore.Routing.Constraints;
+using Microsoft.EntityFrameworkCore;
+using VOD.Common.DTOs;
+using VOD.Membership.Database.Contexts;
+using VOD.Membership.Database.Entities;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -14,6 +20,40 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+ConfigAutoMapper();
+
+builder.Services.AddDbContext<VODContext>(
+options => options.UseSqlServer(
+builder.Configuration.GetConnectionString("VODConnection")));
+
+void ConfigAutoMapper()
+{
+    var config = new AutoMapper.MapperConfiguration(cfg =>
+    {
+        cfg.CreateMap<Director, DirectorDTO>().ReverseMap();
+
+        cfg.CreateMap<Film, FilmDTO>()
+        .ReverseMap()
+        .ForMember(dest => dest.FilmGenres, src => src.Ignore());
+
+        cfg.CreateMap<FilmCreateDTO, Film>()
+        .ForMember(dest => dest.FilmGenres, src => src.Ignore());
+
+        cfg.CreateMap<FilmEditDTO, Film>()
+        .ForMember(dest => dest.FilmGenres, src => src.Ignore());
+
+        cfg.CreateMap<FilmGenre, FilmGenreDTO>().ReverseMap();
+
+        cfg.CreateMap<Genre, GenreDTO>().ReverseMap();
+        cfg.CreateMap<SimilarFilms, SimilarFilmsDTO>()
+        .ReverseMap()
+        .ForMember(dest => dest.Film, src => src.Ignore());
+    });
+
+    var mapper = config.CreateMapper();
+    builder.Services.AddSingleton(builder);
+}
 
 var app = builder.Build();
 
