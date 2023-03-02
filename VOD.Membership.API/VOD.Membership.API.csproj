@@ -19,8 +19,4 @@
     <ProjectReference Include="..\VOD.Membership.Database\VOD.Membership.Database.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
 </Project>

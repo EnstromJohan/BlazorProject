@@ -1,9 +1,3 @@
-using Microsoft.AspNetCore.Routing.Constraints;
-using Microsoft.EntityFrameworkCore;
-using VOD.Common.DTOs;
-using VOD.Membership.Database.Contexts;
-using VOD.Membership.Database.Entities;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -26,6 +20,27 @@ ConfigAutoMapper();
 builder.Services.AddDbContext<VODContext>(
 options => options.UseSqlServer(
 builder.Configuration.GetConnectionString("VODConnection")));
+
+builder.Services.AddScoped<IDbService, DbService>();
+
+var app = builder.Build();
+
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+app.UseHttpsRedirection();
+
+app.UseCors("CorsAllAccessPolicy");
+
+app.UseAuthorization();
+
+app.MapControllers();
+
+app.Run();
 
 void ConfigAutoMapper()
 {
@@ -52,24 +67,5 @@ void ConfigAutoMapper()
     });
 
     var mapper = config.CreateMapper();
-    builder.Services.AddSingleton(builder);
+    builder.Services.AddSingleton(mapper);
 }
-
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
-app.UseHttpsRedirection();
-
-app.UseCors("CorsAllAccessPolicy");
-
-app.UseAuthorization();
-
-app.MapControllers();
-
-app.Run();
