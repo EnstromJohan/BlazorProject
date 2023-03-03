@@ -2,15 +2,16 @@
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace VOD.Membership.API.Controllers 
+namespace VOD.Membership.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class FilmsController : ControllerBase
+    public class GenresController : ControllerBase
     {
+
         private readonly IDbService _db;
 
-        public FilmsController(IDbService db)
+        public GenresController (IDbService db)
         {
             _db = db;
         }
@@ -21,14 +22,14 @@ namespace VOD.Membership.API.Controllers
 
             try
             {
-               var films = await _db.GetAsync<Film, FilmDTO>();
-                return Results.Ok(films);
+                var genres = await _db.GetAsync<Genre, GenreDTO>();
+                return Results.Ok(genres);
             }
             catch (Exception ex)
             {
                 return Results.NotFound(ex.Message);
             }
-            
+
         }
 
         [HttpGet("{id}")]
@@ -36,28 +37,28 @@ namespace VOD.Membership.API.Controllers
         {
             try
             {
-                _db.Include<Film>();
-                
-                var film = await _db.SingleAsync<Film, FilmDTO>( f => f.Id == id);
-                return Results.Ok(film);
+                _db.Include<Genre>();
+
+                var genre = await _db.SingleAsync<Genre, GenreDTO>(g => g.Id == id);
+                return Results.Ok(genre);
             }
             catch (Exception ex)
             {
                 return Results.NotFound(ex.Message);
             }
-           
+
         }
 
-        [HttpPost] 
-        public async Task<IResult> Post([FromBody] FilmCreateDTO dto)
+        [HttpPost]
+        public async Task<IResult> Post([FromBody] GenreCreateDTO dto)
         {
 
             try
             {
-                var film = await _db.AddAsync<Film, FilmCreateDTO>(dto);
+                var genre = await _db.AddAsync<Genre, GenreCreateDTO>(dto);
                 var result = await _db.SaveChangesAsync();
                 if (!result) return Results.BadRequest();
-                return Results.Created(_db.GetURI(film), film);
+                return Results.Created(_db.GetURI(genre), genre);
             }
             catch (Exception ex)
             {
@@ -66,21 +67,21 @@ namespace VOD.Membership.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IResult> Put(int id, [FromBody] FilmEditDTO dto)
+        public async Task<IResult> Put(int id, [FromBody] GenreEditDTO dto)
         {
 
             try
             {
                 if (id != dto.Id) return Results.BadRequest($"Wrong id. URI Id: {id} DTO Id: {dto.Id}");
-                var exists = await _db.AnyAsync<Director>(f => f.Id == dto.DirectorId);
+                var exists = await _db.AnyAsync<Film>(g => g.Id == dto.Id);
                 if (!exists) return Results.NotFound("Director not found");
 
-                exists = await _db.AnyAsync<Film>(f => f.Id == id);
+                exists = await _db.AnyAsync<Genre>(g => g.Id == id);
                 if (!exists) return Results.NotFound("Director not found");
-                
 
 
-                _db.Update<Film, FilmEditDTO>(id, dto);
+
+                _db.Update<Genre, GenreEditDTO>(id, dto);
                 var result = await _db.SaveChangesAsync();
                 if (!result) return Results.BadRequest();
                 return Results.NoContent();
@@ -97,10 +98,10 @@ namespace VOD.Membership.API.Controllers
         {
             try
             {
-                var exists = await _db.AnyAsync<Film>(f => f.Id == id);
+                var exists = await _db.AnyAsync<Genre>(g => g.Id == id);
                 if (!exists) return Results.NotFound("Film not found.");
 
-                var success = await _db.DeleteAsync<Film>(id);
+                var success = await _db.DeleteAsync<Genre>(id);
                 if (!success) return Results.NotFound("Film not found.");
 
                 var result = await _db.SaveChangesAsync();

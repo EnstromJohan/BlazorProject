@@ -1,4 +1,7 @@
-﻿namespace VOD.Membership.Database.Contexts
+﻿using Microsoft.EntityFrameworkCore;
+using VOD.Membership.Database.Entities;
+
+namespace VOD.Membership.Database.Contexts
 {
     public class VODContext : DbContext
     {
@@ -23,7 +26,26 @@
                 relationship.DeleteBehavior = DeleteBehavior.Restrict;
             }
 
-            
+            builder.Entity<SimilarFilms>().HasKey(ci => new { ci.Id, ci.SimilarFilmId });
+            builder.Entity<FilmGenre>().HasKey(ci => new { ci.FilmId, ci.GenreId });
+
+
+            builder.Entity<Film>(entity =>
+            {
+                entity
+                    .HasMany(d => d.SimilarFilms)
+                    .WithOne(p => p.Film)
+                    .HasForeignKey(d => d.Id)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+
+                entity.HasMany(d => d.Genres)
+                      .WithMany(p => p.Films)
+                      .UsingEntity<FilmGenre>()
+                      .ToTable("FilmGenres");
+            });
+
+
         }
 
         

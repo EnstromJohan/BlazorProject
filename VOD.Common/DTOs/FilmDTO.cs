@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.IO;
 
 namespace VOD.Common.DTOs
 {
@@ -9,7 +10,10 @@ namespace VOD.Common.DTOs
         public string? Title { get; set; }
         public DateTime? Date { get; set; }
         public int DirectorId { get; set; }
+
         public string? DirectorName { get; set; }
+        public int SimilarFilmsId { get; set; }
+        
         public bool Free { get; set; }
         
         public string? Description { get; set; }
@@ -17,8 +21,8 @@ namespace VOD.Common.DTOs
         public string? FilmUrl { get; set; }
 
         public DirectorDTO? Director { get; set; }
-
-        public List<FilmGenreDTO>? FilmGenres { get; set; }
+        public List<SimilarFilmsDTO>? SimilarFilms { get; set; }
+        public List<GenreDTO>? Genres { get; set; }
 
     }
 
@@ -27,8 +31,8 @@ namespace VOD.Common.DTOs
         public string? Title { get; set; }
         public DateTime? Date { get; set; }
         public int DirectorId { get; set; }
-
         public string? DirectorName { get; set; }
+        public int SimilarFilmsId { get; set; }
         public bool Free { get; set; }
 
         public string? Description { get; set; }

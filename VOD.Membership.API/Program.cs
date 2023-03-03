@@ -50,20 +50,20 @@ void ConfigAutoMapper()
 
         cfg.CreateMap<Film, FilmDTO>()
         .ReverseMap()
-        .ForMember(dest => dest.FilmGenres, src => src.Ignore());
+        .ForMember(dest => dest.Genres, src => src.Ignore());
 
         cfg.CreateMap<FilmCreateDTO, Film>()
-        .ForMember(dest => dest.FilmGenres, src => src.Ignore());
+        .ForMember(dest => dest.Genres, src => src.Ignore());
 
         cfg.CreateMap<FilmEditDTO, Film>()
-        .ForMember(dest => dest.FilmGenres, src => src.Ignore());
+        .ForMember(dest => dest.Genres, src => src.Ignore());
 
         cfg.CreateMap<FilmGenre, FilmGenreDTO>().ReverseMap();
 
         cfg.CreateMap<Genre, GenreDTO>().ReverseMap();
         cfg.CreateMap<SimilarFilms, SimilarFilmsDTO>()
         .ReverseMap()
-        .ForMember(dest => dest.Film, src => src.Ignore());
+        .ForMember(dest => dest.Id, src => src.Ignore());
     });
 
     var mapper = config.CreateMapper();
