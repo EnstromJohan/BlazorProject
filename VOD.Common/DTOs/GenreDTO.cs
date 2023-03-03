@@ -6,13 +6,16 @@ namespace VOD.Common.DTOs
     {
         public int Id { get; set; }
         public string? Name { get; set; }
-        public string? Description { get; set; }
+
+        public int FilmGenreId { get; set; }
+        
     }
 
     public class GenreCreateDTO
     {
         public string? Name { get; set; }
-        public string? Description { get; set; }
+        public int  FilmGenreId { get; set;  }
+        
     }
 
     public class GenreEditDTO : GenreCreateDTO

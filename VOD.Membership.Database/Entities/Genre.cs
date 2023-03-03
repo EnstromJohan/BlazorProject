@@ -6,8 +6,6 @@
         [MaxLength(50), Required]
         public string? Name { get; set; }
 
-        public string? Description { get; set; }
-        
-        public virtual FilmGenre? FilmGenre { get; set; }   
+        public int FilmGenreId { get; set; }
     }
 }

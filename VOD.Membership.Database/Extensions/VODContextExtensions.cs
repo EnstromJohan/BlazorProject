@@ -51,7 +51,7 @@
                 {
                     Id = film1.Id,
                     Name = "Sci-fi",
-                    Description = "sadasdasd"
+                    
                     
                 });
 
@@ -59,13 +59,16 @@
                 {
                     Id = film1.Id,
                     Name = "Action",
-                    Description = "sadasdasd"
+                    
 
                 });
 
                 await service.SaveChangesAsync();
+
+                var genre1 = await service.SingleAsync<Genre, GenreDTO>(g => g.Name.Equals("Sci-fi"));
+                var genre2 = await service.SingleAsync<Genre, GenreDTO>(g => g.Name.Equals("Action"));
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
                 throw;

@@ -16,6 +16,8 @@ namespace VOD.Common.DTOs
        
         public string? FilmUrl { get; set; }
 
+        public DirectorDTO? Director { get; set; }
+
         public List<FilmGenreDTO>? FilmGenres { get; set; }
 
     }

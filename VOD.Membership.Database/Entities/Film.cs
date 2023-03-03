@@ -13,6 +13,7 @@
         [MaxLength(1024), Required]
         public string? FilmUrl { get; set; }
 
+        public virtual Director? Director { get; set; } 
         public virtual ICollection<FilmGenre>? FilmGenres { get; set; }
 
     }
